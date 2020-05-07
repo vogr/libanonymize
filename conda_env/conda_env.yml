@@ -1,0 +1,26 @@
+channels:                    # Lists package sources to install from
+- defaults                   # Default Anaconda Repository
+- conda-forge
+
+dependencies:
+# Building
+- cmake
+- ninja
+
+# C++ libraries
+- highfive # HDF5
+- eigen # Matrix and vectors
+- libgomp # for OpenMP
+- openmp # parallelize eigen
+- ann # Approximate nearest neighbors
+
+# Python and libraries
+- python>=3.5
+- pip
+- h5py
+- pybind11
+
+# Notebooks and ipython
+- ipython
+- ipykernel
+- notebook
