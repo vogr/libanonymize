@@ -47,7 +47,7 @@ class Dataset {
          Returns a view of the instance.
         @param i Instance number (= row) to get.
         */
-    	Eigen::Ref<Eigen::VectorXd const> getInstance(int i) const { return m_instances.row(i); };
+    	Eigen::Ref<Eigen::VectorXd> getInstance(int i) { return m_instances.row(i); };
     	/**
     	 * Return the label of the instance
     	 */
