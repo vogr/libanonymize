@@ -65,12 +65,9 @@ int main(int argc, char **argv) {
 	
 	// List of labels
 	std::vector<std::string> const LABELS {"O", "B-MISC", "I-MISC", "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC"};
-	size_t const N_LABELS = LABELS.size();
-	
 	
 	// Positive labels = the labels of interest. All other are negatives.
 	const std::vector<int> POSITIVE_LABELS {3, 4};
-	
 	
 	if (argc < 3) {
 		std::cerr << "Usage:\n\t" << argv[0] << " <training_dataset.hdf5> <testing_dataset.hdf5>" << std::endl;

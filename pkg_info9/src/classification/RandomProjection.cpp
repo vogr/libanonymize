@@ -69,7 +69,7 @@ m_type_sample {type_sample}
     }
 }
 
-void RandomProjection::ProjectionQuality(const Eigen::Ref<RMatrixXd const> datapoints) const {
+void RandomProjection::ProjectionQuality(Eigen::Ref<RMatrixXd const> const & datapoints) const {
     RMatrixXd projected_datapoints = Project(datapoints);
 
 
@@ -113,7 +113,7 @@ void RandomProjection::ProjectionQuality(const Eigen::Ref<RMatrixXd const> datap
     std::cerr << "\nResult: " << sum_norm_projected << std::endl;
 }
 
-RMatrixXd RandomProjection::Project(const Eigen::Ref<RMatrixXd const> datapoints) const {
+RMatrixXd RandomProjection::Project(Eigen::Ref<RMatrixXd const> const & datapoints) const {
     if (datapoints.cols() < m_projection_dim) {
         std::cerr << "Impossible to project on higher dimensions!" << std::endl;
     }

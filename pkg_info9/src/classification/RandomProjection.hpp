@@ -39,12 +39,12 @@ class RandomProjection {
         /**
           Verify the quality of the projection as the mean distance between points in the original and projected data
         */
-        void ProjectionQuality(const Eigen::Ref<RMatrixXd const> datapoints) const;
+        void ProjectionQuality(Eigen::Ref<RMatrixXd const> const & datapoints) const;
         /**
           Project dataset
           @param dataset
         */
-        RMatrixXd Project(const Eigen::Ref<RMatrixXd const> datapoints) const;   
+        RMatrixXd Project(Eigen::Ref<RMatrixXd const> const & datapoints) const;   
         /**
           Original dimension getter
         */

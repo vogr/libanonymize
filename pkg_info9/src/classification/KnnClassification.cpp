@@ -43,8 +43,6 @@ KnnClassification::KnnClassification(int k, std::shared_ptr<Dataset> dataset)
 int KnnClassification::Estimate(Eigen::Ref<Eigen::VectorXd> x, double threshold) {
   //std::cout << "Input vector size:" << x.size() << std::endl;
   
-  auto const d = m_dataset->getDim();
-
   // index of nearest neighbors returned by the search
   std::vector<int> nn_idx(m_k, 0);
   std::vector<double> dists(m_k, 0.);

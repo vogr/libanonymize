@@ -6,4 +6,6 @@
 #     python -m pip install .
 # in this directory.
 
-cmake -S . -B "./build" -GNinja -DCMAKE_BUILD_TYPE=${1:Debug} && cmake --build "./build"
+cd "$(dirname "$0")" &&
+cmake -S . -B "./build" -GNinja -DCMAKE_BUILD_TYPE=${1:Debug} &&
+cmake --build "./build"

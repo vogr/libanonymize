@@ -4,8 +4,8 @@ channels:                    # Lists package sources to install from
 
 dependencies:
 # Building
-- cmake
-- ninja
+- cmake >= 3.17
+- ninja >= 1.9
 
 # C++ libraries
 - highfive # HDF5
@@ -15,10 +15,10 @@ dependencies:
 - ann # Approximate nearest neighbors
 
 # Python and libraries
-- python>=3.5
+- python >= 3.7
 - pip
 - h5py
-- pybind11
+- pybind11 >= 2.5
 
 # Notebooks and ipython
 - ipython

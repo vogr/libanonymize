@@ -8,16 +8,16 @@ int add(int i, int j) {
   return i + j;
 }
 
-RMatrixXd addm(const Eigen::Ref<RMatrixXd const> & a, const Eigen::Ref<RMatrixXd const> & b) {
+RMatrixXd addm(Eigen::Ref<RMatrixXd const> const & a, Eigen::Ref<RMatrixXd const> const & b) {
   return a + b;
 }
 
-void add_in_first(Eigen::Ref<Eigen::MatrixXd> a, Eigen::Ref<Eigen::MatrixXd const> b) {
+void add_in_first(Eigen::Ref<Eigen::MatrixXd> a, Eigen::Ref<Eigen::MatrixXd const> const & b) {
   a += b;
 }
 
 /*
-Eigen::MatrixXd read_hdf5_dataset(std::string fname, std::string dataset_name) {
+RMatrixXd read_hdf5_dataset(std::string fname, std::string dataset_name) {
     // open the file for reading
     HDF5::File hf = HDF5::File(fname, HDF5::File::ReadOnly);
 
