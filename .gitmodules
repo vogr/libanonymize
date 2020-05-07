@@ -1,0 +1,3 @@
+[submodule "conda_info9/pkg_info9/extern/pybind11"]
+	path = conda_info9/pkg_info9/extern/pybind11
+	url = https://github.com/pybind/pybind11
