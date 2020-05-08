@@ -17,9 +17,9 @@ class ConfusionMatrix {
         /**
           Adding a single observation to the (unnormalized) confusion matrix:
         @param true_label (int) the true label of the new point to add to the confusion matrix.
-        @param predicted_label (double) the threshold above which class label '1' will be predicted.
+        @param predicted_label
         */
-        void AddPrediction(int true_label, int predicted_label, std::vector<int> positive_labels);
+        void AddPrediction(int true_label, int predicted_label);
 
         /**
           Prints the confusion matrix and the evaluation metrics.

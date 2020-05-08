@@ -19,7 +19,7 @@
 void Dataset::Show(bool verbose) const {
 	int n = getNbrSamples();
 	int d = getDim();
-	std::cout<<"Dataset with " << n <<" samples, and "<< d <<" dimensions."<<std::endl;
+	std::cerr<<"Dataset with " << n <<" samples, and "<< d <<" dimensions."<<std::endl;
 	if (verbose) {
 		for (int i=0; i< n; i++) {
 			for (int j=0; j < d; j++) {

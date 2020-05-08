@@ -12,17 +12,9 @@ ConfusionMatrix::ConfusionMatrix() {
   }
 }
 
-void ConfusionMatrix::AddPrediction(int true_label, int predicted_label, std::vector<int> positive_labels) {
-  int col = 0, row = 0;
-  for(auto l : positive_labels) {
-	  if(true_label == l) {
-		  col = 1; // true label is a positive occurence
-	  }
-	  if (predicted_label == l) {
-		  row = 1; // predicted label is a positive occurence
-	  }
-  }
-  m_confusion_matrix[col][row] += 1;
+void ConfusionMatrix::AddPrediction(int true_label, int predicted_label) {
+  // Accepts only binary labels (1 or 0) !
+  m_confusion_matrix[true_label][predicted_label] += 1;
 }
 
 void ConfusionMatrix::PrintEvaluation() const{

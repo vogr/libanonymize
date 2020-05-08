@@ -46,6 +46,11 @@ public:
      @returns the prediction as an integer
     */
   int Estimate(Eigen::Ref<Eigen::VectorXd> x, double threshold=0.5);
+  /**
+   * Predict label in a dataset with only binary labels (0 or 1)
+   */
+  int EstimateBinary(Eigen::Ref<Eigen::VectorXd> x, double threshold=0.5);
+
     /**
       The getter for the number of neighbors
     */

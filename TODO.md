@@ -7,3 +7,5 @@
   + use buffer protocol (pybind11) : python passes a struct containing dims, size, stride, and a pointer.
   + use pybind special treatment of Eigen
   + use pyarrow table and unwrap to arrow table in C++ (<- does it copy or not ?)
+
+- compare our impl against TD6 and time the important fctions (loading data, projection, projection quality, estimation) + compare confusion matrix.

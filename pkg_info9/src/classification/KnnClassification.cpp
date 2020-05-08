@@ -40,6 +40,37 @@ KnnClassification::KnnClassification(int k, std::shared_ptr<Dataset> dataset)
 }
 
 
+int KnnClassification::EstimateBinary(Eigen::Ref<Eigen::VectorXd> x, double threshold) {
+  // index of nearest neighbors returned by the search
+  std::vector<int> nn_idx(m_k, 0);
+  std::vector<double> dists(m_k, 0.);
+
+
+  // NOTE : we directly pass a vector to the data underlying
+  // the Eigen::Ref<Eigen::VectorXd> to ANN. A bit hacky, and
+  // does not accept const qualifier... but saves a copy.
+  m_kdTree->annkSearch(
+      x.data(),      // query point
+      m_k,    // number of near neighbors to find
+      nn_idx.data(), // MODIFIED : id of nearest neighbors
+      dists.data() // MODIFIED : array of dists to these neighbors
+  );
+
+  double s = 0.;
+  //std::vector<double> p_label(m_dataset->getMaxLabel() + 1, 0.);
+  for(auto i : nn_idx) {
+    auto const label = m_dataset->getLabel(i);
+    s += static_cast<double>(label) / m_k;
+  }
+
+  if (s > threshold) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
+}
+
 int KnnClassification::Estimate(Eigen::Ref<Eigen::VectorXd> x, double threshold) {
   //std::cout << "Input vector size:" << x.size() << std::endl;
   
@@ -51,31 +82,13 @@ int KnnClassification::Estimate(Eigen::Ref<Eigen::VectorXd> x, double threshold)
 	// NOTE : we directly pass a vector to the data underlying
 	// the Eigen::Ref<Eigen::VectorXd> to ANN. A bit hacky, and
 	// does not accept const qualifier... but saves a copy.
-
-  //std::cout << "Will search in kd-tree..." << std::endl;
   m_kdTree->annkSearch(
       x.data(),      // query point
       m_k,    // number of near neighbors to find
       nn_idx.data(), // MODIFIED : id of nearest neighbors
       dists.data() // MODIFIED : array of dists to these neighbors
   );
-  //std::cout << "Done!" << std::endl;
-  
-  /*
-  std::cout << "nn_idx: ";
-  for(auto f : nn_idx) {
-	std::cout << f << " ";
-  }
-  std::cout << std::endl;
 
-  
-  std::cout << "labels: ";
-  for(auto i : nn_idx) {
-	std::cout << label << " ";
-  }
-  std::cout << std::endl;
-  */
-  
   std::vector<double> p_label(m_dataset->getMaxLabel() + 1, 0.);
   for(auto i : nn_idx) {
     auto const label = m_dataset->getLabel(i);
@@ -92,24 +105,14 @@ int KnnClassification::Estimate(Eigen::Ref<Eigen::VectorXd> x, double threshold)
     * OTHER POSSIBLE CHOICE:
     * Return best label found, even if 0
     */
-   
   size_t lmax = 1;
   double pmax = p_label[1];
   for (size_t i = 1; i < p_label.size(); i++) {
-	if(p_label[i] > pmax) {
-		lmax = i;
-		pmax = p_label[i];
-	}
+    if(p_label[i] > pmax) {
+      lmax = i;
+      pmax = p_label[i];
+    }
   }
-  /*
-  std::cout << "p_label: ";
-  for(auto f : p_label) {
-	std::cout << f << " ";
-  }
-  std::cout << std::endl;
-  
-  std::cout << "lmax " << lmax << " pmax " << pmax << std::endl;
-  */
   
   if (pmax > threshold) {
     return lmax;
