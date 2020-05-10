@@ -58,10 +58,11 @@ RMatrixXi RandomProjection::RandomRademacherMatrix(int d, int projection_dim) {
 RandomProjection::RandomProjection(int original_dimension, int projection_dim, std::string type_sample) :
 m_original_dimension {original_dimension},
 m_projection_dim {projection_dim},
-m_type_sample {type_sample}
+m_type_sample {std::move(type_sample)}
 {
+
     // Initialize projection matrix
-    if (type_sample == "Gaussian") {
+    if (m_type_sample == "Gaussian") {
       m_projection = RandomGaussianMatrix(original_dimension, projection_dim);
     }
     else {
@@ -71,7 +72,6 @@ m_type_sample {type_sample}
 
 void RandomProjection::ProjectionQuality(Eigen::Ref<RMatrixXd const> const & datapoints) const {
     RMatrixXd projected_datapoints = Project(datapoints);
-
 
 	std::cerr << "Original dataset size for evaluation: " << datapoints.rows() << ", " << datapoints.cols() << std::endl;
 	std::cerr << "Projected dataset size for evaluation: " << projected_datapoints.rows() << ", " << projected_datapoints.cols() << std::endl;
@@ -117,7 +117,12 @@ RMatrixXd RandomProjection::Project(Eigen::Ref<RMatrixXd const> const & datapoin
     if (datapoints.cols() < m_projection_dim) {
         std::cerr << "Impossible to project on higher dimensions!" << std::endl;
     }
-    return datapoints * m_projection;
+
+    /***************************************************/
+    /**** Projection fails without eval. WHY ???? ******/
+    /***************************************************/
+
+    return (datapoints * m_projection).eval();
 }
 
 int RandomProjection::getOriginalDimension() const {

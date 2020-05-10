@@ -33,7 +33,7 @@ class Dataset {
       Dataset list-initialization (needed for RandomProjection).
     */
     Dataset(RMatrixXd instances, Eigen::VectorXi labels)
-    : m_instances{instances}, m_labels{labels}
+    : m_instances{std::move(instances)}, m_labels{std::move(labels)}
     { max_label = m_labels.maxCoeff(); };
       
     /**
@@ -45,7 +45,7 @@ class Dataset {
      Returns a view of the instance.
     @param i Instance number (= row) to get.
     */
-  Eigen::Ref<Eigen::VectorXd> getInstance(int i) { return m_instances.row(i); };
+  Eigen::Ref<Eigen::VectorXd const> getInstance(int i) { return m_instances.row(i); };
   /**
    * Return the label of the instance
    */

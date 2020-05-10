@@ -30,6 +30,11 @@ class RandomProjection {
         */
         static RMatrixXi RandomRademacherMatrix(int d, int projection_dim);
         /**
+         * Initialize empty RandomProjection
+         */
+        //RandomProjection() = default;
+        //RandomProjection(RandomProjection & other) = default;
+        /**
           The constructor.
           @param col_class the classification column
           @param projection_dim projection dimension (l in the TD)

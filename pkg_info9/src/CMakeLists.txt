@@ -30,8 +30,15 @@ target_link_libraries(info9-lib PRIVATE HighFive)
 target_link_libraries(info9-lib PRIVATE ${ANN})
 
 target_compile_options(info9-lib
-        PUBLIC
+    PUBLIC
         $<$<CONFIG:Debug>:-O0 -ggdb3 -gsplit-dwarf>
         $<$<CONFIG:Release>:-O2 -march=native -flto -fno-fat-lto-objects> # release: 03 is implied, add back 02
         $<$<CONFIG:RelWithDebInfo>:-O2 -march=native -ggdb3 -flto -fno-fat-lto-objects> # relwithdebinfo: 02 is implied
+        -pipe
+        -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
+        -fexceptions -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection
+        -Wl,-z,noexecstack,-z,relro
+    PRIVATE
+        -Wall -Wextra -Wpedantic -Wformat=2 -Wswitch-default -Wswitch-enum -Wfloat-equal -Wno-conversion
+        -pedantic-errors -Werror=format-security
     )
