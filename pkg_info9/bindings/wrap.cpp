@@ -8,6 +8,7 @@
 #include "classification/KnnClassificationMulticlass.hpp"
 #include "classification/KnnClassificationBinary.hpp"
 #include "classification/KnnClassificationMulticlass.hpp"
+#include "classification/LogisticReg.hpp"
 #include "classification/RandomProjection.hpp"
 #include "classification/Dataset.hpp"
 
@@ -27,20 +28,28 @@ PYBIND11_MODULE(info9, m) {
     m.def("read_hdf5_dataset", &read_hdf5_dataset);
     
     py::class_<Dataset, std::shared_ptr<Dataset> >(m, "Dataset")
-	  .def(py::init<RMatrixXd, Eigen::VectorXi>(), py::arg("datapoints"), py::arg("true_labels"))
-	  .def("show", &Dataset::Show, py::arg("show_data"));
+      .def(py::init<RMatrixXd, Eigen::VectorXi>(), py::arg("datapoints"), py::arg("true_labels"))
+      .def("show", &Dataset::Show, py::arg("show_data"));
 
     py::class_<KnnClassificationBinary>(m, "KnnClassificationBinary")
-	  .def(py::init<int, std::shared_ptr<Dataset>, double>(), py::arg("k"), py::arg("dataset"), py::arg("threshold"))
-	  .def("estimate", &KnnClassificationBinary::Estimate)
+      .def(py::init<int, std::shared_ptr<Dataset>, double>(), py::arg("k"), py::arg("dataset"), py::arg("threshold"))
+      .def("estimate", &KnnClassificationBinary::Estimate)
       .def("estimate_all", &KnnClassificationBinary::EstimateAll, py::arg("dataset"))
-	  .def("print_kd_stats", &KnnClassificationBinary::print_kd_stats);
+      .def("print_kd_stats", &KnnClassificationBinary::print_kd_stats);
 
     py::class_<KnnClassificationMulticlass>(m, "KnnClassificationMulticlass")
       .def(py::init<int, std::shared_ptr<Dataset>, std::vector<std::string> >(), py::arg("k"), py::arg("dataset"), py::arg("labels"))
       .def("estimate", &KnnClassificationMulticlass::Estimate)
       .def("estimate_all", &KnnClassificationMulticlass::EstimateAll, py::arg("dataset"))
       .def("print_kd_stats", &KnnClassificationMulticlass::print_kd_stats);
+
+
+    py::class_<LogisticReg>(m, "LogisticReg")
+      .def(py::init<std::shared_ptr<Dataset>, double, double >(), py::arg("dataset"), py::arg("lambda"), py::arg("decision_threshold"))
+      .def("fit_newton", &LogisticReg::fit_newton, py::arg("epsilon"))
+      .def("fit_gd", &LogisticReg::fit_gd, py::arg("epsilon"), py::arg("alpha"))
+      .def("estimate", &LogisticReg::Estimate)
+      .def("estimate_all", &LogisticReg::EstimateAll, py::arg("dataset"));
 
     py::class_<ConfusionMatrix>(m, "ConfusionMatrix")
         .def(py::init<>())
@@ -59,7 +68,6 @@ PYBIND11_MODULE(info9, m) {
     py::class_<RandomProjection>(m, "RandomProjection")
         .def(py::init<int, int, std::string>(), py::arg("original_dimension"), py::arg("projection_dim"), py::arg("type_sample"))
         .def("project", &RandomProjection::Project, py::arg("datapoints"));
-        .def("")
 
     m.def("annClose", &annClose);
 
