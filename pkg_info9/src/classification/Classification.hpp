@@ -8,7 +8,7 @@
 
 
 /** 
-	The Classification class is an abstract class that will be the basis of the KnnClassification classe.
+	The Classification class is an abstract class that will be the basis of the classifier classes.
 */
 class Classification{
 protected:
@@ -30,7 +30,7 @@ public:
   */
 	std::shared_ptr<Dataset> getDataset() { return m_dataset; };
   /**
-    The Estimate method is virtual: it (could) depend(s) on the Classification model(s) implemented (here we use only the KnnClassification class).
+    The Estimate method is virtual: it (could) depend(s) on the Classification model(s) implemented.
   */
-	virtual int Estimate(Eigen::Ref<Eigen::VectorXd const> const & x, double threshold=0.5) = 0;
+	virtual int Estimate(Eigen::Ref<Eigen::VectorXd const> const & x) = 0;
 };

@@ -2,13 +2,19 @@ cmake_minimum_required(VERSION 3.13)
 project(info9-lib VERSION 1.0)
 
 
-add_library(info9-lib SHARED
- "helpers.cpp" 
+add_library(info9-lib STATIC
+  "helpers.cpp" 
   "classification/ConfusionMatrix.cpp"
+  "classification/ConfusionMatrixMulticlass.cpp"
   "classification/Dataset.cpp"
   "classification/KnnClassification.cpp"
+  "classification/KnnClassificationBinary.cpp"
+  "classification/KnnClassificationMulticlass.cpp"
+  "classification/LogisticReg.cpp"
   "classification/RandomProjection.cpp"
 )
+
+set_target_properties(info9-lib PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 set_target_properties(info9-lib PROPERTIES
     CXX_STANDARD 14
@@ -17,15 +23,11 @@ set_target_properties(info9-lib PROPERTIES
 )
 
 target_include_directories(info9-lib PUBLIC ".")
-
-# Use OpenMP to parallelize some of Eigen's algorithms.
-if(OpenMP_CXX_FOUND)
-  # This will generate a warning in conda environment
-  target_link_libraries(info9-lib PRIVATE OpenMP::OpenMP_CXX)
-endif()
+target_include_directories(info9-lib PUBLIC "classification")
 
 
 target_link_libraries(info9-lib PRIVATE Eigen3::Eigen)
+target_link_libraries(info9-lib PRIVATE OpenMP::OpenMP_CXX)
 target_link_libraries(info9-lib PRIVATE HighFive)
 target_link_libraries(info9-lib PRIVATE ${ANN})
 

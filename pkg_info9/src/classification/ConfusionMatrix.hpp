@@ -1,7 +1,8 @@
 
 #pragma once
 
-#include <vector>
+#include <array>
+#include <string>
 
 /**
   The ConfusionMatrix class .
@@ -13,6 +14,14 @@ class ConfusionMatrix {
           The standard constructor.
         */
         ConfusionMatrix();
+        ConfusionMatrix(std::array<std::array<int, 2>, 2> v) {
+          for (int i = 0; i < 2; i++) {
+            for(int j = 0; j < 2; j++) {
+              m_confusion_matrix[i][j] = v[i][j];
+            }
+          }
+        };
+
         
         /**
           Adding a single observation to the (unnormalized) confusion matrix:
@@ -24,7 +33,7 @@ class ConfusionMatrix {
         /**
           Prints the confusion matrix and the evaluation metrics.
         */
-        void PrintEvaluation() const;
+        std::string PrintEvaluation() const;
         
         /**
         The number of true positive (amounts to an accessor to an accessor of one of the cells of the confusion matrix array).

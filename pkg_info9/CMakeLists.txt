@@ -27,7 +27,9 @@ pybind11_add_module(info9 MODULE "bindings/wrap.cpp")
 
 target_link_libraries(info9 PRIVATE info9-lib)
 target_link_libraries(info9 PRIVATE Eigen3::Eigen)
+target_link_libraries(info9 PRIVATE OpenMP::OpenMP_CXX)
 target_link_libraries(info9 PRIVATE HighFive)
+target_link_libraries(info9 PRIVATE ${ANN})
 
 target_compile_options(info9
       PUBLIC

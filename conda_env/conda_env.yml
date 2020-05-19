@@ -11,7 +11,7 @@ dependencies:
 - highfive # HDF5
 - eigen # Matrix and vectors
 - libgomp # for OpenMP
-- openmp # parallelize eigen
+- openmp # parallelize Eigen
 - ann # Approximate nearest neighbors
 
 # Python and libraries

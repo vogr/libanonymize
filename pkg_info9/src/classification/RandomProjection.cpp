@@ -118,9 +118,10 @@ RMatrixXd RandomProjection::Project(Eigen::Ref<RMatrixXd const> const & datapoin
         std::cerr << "Impossible to project on higher dimensions!" << std::endl;
     }
 
-    /***************************************************/
-    /**** Projection fails without eval. WHY ???? ******/
-    /***************************************************/
+    /***************************************************
+    **** Sometimes weird results, adding .eval() seems 
+    **** to be more stable ?
+    ****************************************************/
 
     return (datapoints * m_projection).eval();
 }

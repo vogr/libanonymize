@@ -1,7 +1,6 @@
 #include "ConfusionMatrix.hpp"
 #include <iostream>
-
-using namespace std;
+#include <sstream>
 
 ConfusionMatrix::ConfusionMatrix() {
   // Populate 2x2 matrix with 0s
@@ -17,27 +16,29 @@ void ConfusionMatrix::AddPrediction(int true_label, int predicted_label) {
   m_confusion_matrix[true_label][predicted_label] += 1;
 }
 
-void ConfusionMatrix::PrintEvaluation() const{
+std::string ConfusionMatrix::PrintEvaluation() const{
+  std::stringstream ss;
     // Prints the confusion matrix
-    cout <<"\t\tPredicted\n";
-    cout <<"\t\t0\t1\n";
-    cout <<"Actual\t0\t"
+    ss <<"\t\tPredicted\n";
+    ss <<"\t\t0\t1\n";
+    ss <<"Actual\t0\t"
         <<GetTN() <<"\t"
-        <<GetFP() <<endl;
-    cout <<"\t1\t"
+        <<GetFP() << std::endl;
+    ss <<"\t1\t"
         <<GetFN() <<"\t"
-        <<GetTP() <<endl <<endl;
+        <<GetTP() <<std::endl <<std::endl;
     // Prints the estimators
-    cout <<"Error rate\t\t"
-        <<error_rate() <<endl;
-    cout <<"False alarm rate\t"
-        <<false_alarm_rate() <<endl;
-    cout <<"Detection rate\t\t"
-        <<detection_rate() <<endl;
-    cout <<"F-score\t\t\t"
-        <<f_score() <<endl;
-    cout <<"Precision\t\t"
-        <<precision() <<endl;
+    ss <<"Error rate\t\t"
+        <<error_rate() <<std::endl;
+    ss <<"False alarm rate\t"
+        <<false_alarm_rate() <<std::endl;
+    ss <<"Detection rate\t\t"
+        <<detection_rate() <<std::endl;
+    ss <<"F-score\t\t\t"
+        <<f_score() <<std::endl;
+    ss <<"Precision\t\t"
+        <<precision() <<std::endl;
+    return ss.str();
 }
 
 int ConfusionMatrix::GetTP() const {

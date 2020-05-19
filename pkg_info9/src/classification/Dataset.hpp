@@ -40,12 +40,12 @@ class Dataset {
       The Show method displays the number of instances and columns of the Dataset.
       @param verbose If set to True, the Dataset is also printed.
     */
-    void Show(bool verbose) const;
+    std::string Show(bool verbose) const;
     /**
      Returns a view of the instance.
     @param i Instance number (= row) to get.
     */
-  Eigen::Ref<Eigen::VectorXd const> getInstance(int i) { return m_instances.row(i); };
+  Eigen::Ref<Eigen::VectorXd const> getInstance(int i) const { return m_instances.row(i); };
   /**
    * Return the label of the instance
    */
