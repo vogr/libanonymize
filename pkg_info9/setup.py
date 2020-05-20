@@ -62,10 +62,9 @@ class CMakeBuild(build_ext):
 
 setup(
     name='info9',
-    version='0.0.1',
-    author='Dean Moldovan',
-    author_email='dean0x7d@gmail.com',
-    description='A test project using pybind11 and CMake',
+    version='1.0.0',
+    author='V.O. and A.C.',
+    description='Classifier algorithms for data anonymization.',
     long_description='',
     ext_modules=[CMakeExtension('info9')],
     cmdclass=dict(build_ext=CMakeBuild),

@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Ce projet implémente différentes méthodes de classification dans utilisée pour anonymiser des données. Ce fichier `README.md` vous guidera pour l'installation et l'exécution de ce projet sur des exemples.
+Ce projet implémente différentes méthodes de classification utilisée pour anonymiser des données. Ce fichier `README.md` vous guidera pour l'installation et l'exécution de ce projet sur des exemples.
 
 Notre projet présente une architecture hybride :
 
@@ -72,3 +72,14 @@ Les sous-dossiers de `examples_cpp` contiennent des programmes compilables C++ p
 - un script `build.sh` permettant de compiler le programme avec la librairie `libinfo9`. Ce script appelle simplement CMake.
 - un script `run.sh` permettant d'exécuter le programme compilé sur des données, avec des paramètres par défauts choisis à l'avance.
 - un fichier source `main.cpp`, où le programme est implémenté.
+
+__Attention :__ Les programmes s'exécutent bien plus rapidement lorsqu'ils sont compilés avec les optimisations. C'est le mode par défaut utilisé par `build.sh`. De manière équivalente, on pourra donc utiliser:
+```console
+# Pour des builds optimisés
+$ ./build.sh
+# ou
+$ ./build.sh Release
+# ou
+$ cmake -S . -B "./build" -GNinja -DCMAKE_BUILD_TYPE=Release
+$ cmake --build "./build"
+```

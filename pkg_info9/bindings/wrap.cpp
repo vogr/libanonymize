@@ -48,6 +48,8 @@ PYBIND11_MODULE(info9, m) {
       .def(py::init<std::shared_ptr<Dataset>, double, double >(), py::arg("dataset"), py::arg("lambda"), py::arg("decision_threshold"))
       .def("fit_newton", &LogisticReg::fit_newton, py::arg("epsilon"))
       .def("fit_gd", &LogisticReg::fit_gd, py::arg("epsilon"), py::arg("alpha"))
+      .def("fit_sgd", &LogisticReg::fit_sgd, py::arg("epsilon"), py::arg("alpha"))
+      .def("fit_sgd_rmsprop", &LogisticReg::fit_sgd_rmsprop, py::arg("epsilon"))
       .def("estimate", &LogisticReg::Estimate)
       .def("estimate_all", &LogisticReg::EstimateAll, py::arg("dataset"));
 
