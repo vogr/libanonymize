@@ -65,8 +65,15 @@ m_type_sample {std::move(type_sample)}
     if (m_type_sample == "Gaussian") {
       m_projection = RandomGaussianMatrix(original_dimension, projection_dim);
     }
-    else {
+    else if (m_type_sample == "Rademacher") {
       m_projection = std::sqrt(3. / projection_dim) * RandomRademacherMatrix(original_dimension, projection_dim).cast<double>();
+    }
+    else if (m_type_sample == "None") {
+      // nothing to prepare
+    }
+    else {
+      std::cerr << "Unknown projection type.\n";
+      abort();
     }
 }
 
@@ -116,6 +123,10 @@ void RandomProjection::ProjectionQuality(Eigen::Ref<RMatrixXd const> const & dat
 RMatrixXd RandomProjection::Project(Eigen::Ref<RMatrixXd const> const & datapoints) const {
     if (datapoints.cols() < m_projection_dim) {
         std::cerr << "Impossible to project on higher dimensions!" << std::endl;
+    }
+
+    if (m_type_sample == "None") {
+      return datapoints;
     }
 
     /***************************************************

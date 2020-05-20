@@ -40,6 +40,7 @@ class RandomProjection {
           @param projection_dim projection dimension (l in the TD)
           @param type_sample either "Gaussian" and anything else which would lead to a Rademacher random projection
         */
+        RandomProjection() = default;
         RandomProjection(int original_dimension, int projection_dim, std::string type_sample);
         /**
           Verify the quality of the projection as the mean distance between points in the original and projected data

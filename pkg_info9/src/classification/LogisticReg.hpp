@@ -13,7 +13,6 @@
 class LogisticReg : public Classification {
     private:
         Eigen::VectorXd beta_1;
-        std::shared_ptr<Dataset> m_dataset;
         int m_dim {0};
         int m_nb_instances {0};
         double m_lambda {0.};
@@ -36,7 +35,13 @@ class LogisticReg : public Classification {
         /* Simpler gradient descent iteration to minimize regularized cost function
            with learning rate alpha. */
         void fit_gd(double epsilon, double alpha);
-        
+
+        /* Stochastic gradient descent, using mini-batching */
+        void fit_sgd(double epsilon, double alpha);
+
+        /* SGD with mini-batching using RMSProp convergence optimizer */
+        void fit_sgd_rmsprop(double epsilon);
+
         //Computes the probability of label being 1. If higehr than threshold, then label is predicted to be 1
         int Estimate(Eigen::Ref<Eigen::VectorXd const> const &x) override;
         // Estimate label of all observables in a dataset and compare then to the true labels (found in the dataset).
