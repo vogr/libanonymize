@@ -1,5 +1,5 @@
 
-# INF431 - Projet 9 : GDPR in practice
+# INF442 - Projet 9 : GDPR in practice
 
 ## Introduction
 
