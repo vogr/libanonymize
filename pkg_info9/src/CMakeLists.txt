@@ -11,6 +11,7 @@ add_library(info9-lib STATIC
   "classification/KnnClassificationBinary.cpp"
   "classification/KnnClassificationMulticlass.cpp"
   "classification/LogisticReg.cpp"
+  "classification/LogisticRegMultinomial.cpp"
   "classification/RandomProjection.cpp"
 )
 

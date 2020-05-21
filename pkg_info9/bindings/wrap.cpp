@@ -9,6 +9,7 @@
 #include "classification/KnnClassificationBinary.hpp"
 #include "classification/KnnClassificationMulticlass.hpp"
 #include "classification/LogisticReg.hpp"
+#include "classification/LogisticRegMultinomial.hpp"
 #include "classification/RandomProjection.hpp"
 #include "classification/Dataset.hpp"
 
@@ -29,7 +30,12 @@ PYBIND11_MODULE(info9, m) {
     
     py::class_<Dataset, std::shared_ptr<Dataset> >(m, "Dataset")
       .def(py::init<RMatrixXd, Eigen::VectorXi>(), py::arg("datapoints"), py::arg("true_labels"))
-      .def("show", &Dataset::Show, py::arg("show_data"));
+      .def("show", &Dataset::Show, py::arg("show_data"))
+      .def("getInstance", &Dataset::getInstance, py::arg("i"))
+      .def("getLabel", &Dataset::getLabel, py::arg("i"))
+      .def("getNbrSamples", &Dataset::getNbrSamples)
+      .def("getDim", &Dataset::getDim)
+      .def("getMaxLabel", &Dataset::getMaxLabel);
 
     py::class_<KnnClassificationBinary>(m, "KnnClassificationBinary")
       .def(py::init<int, std::shared_ptr<Dataset>, double>(), py::arg("k"), py::arg("dataset"), py::arg("threshold"))
@@ -51,7 +57,16 @@ PYBIND11_MODULE(info9, m) {
       .def("fit_sgd", &LogisticReg::fit_sgd, py::arg("epsilon"), py::arg("alpha"))
       .def("fit_sgd_rmsprop", &LogisticReg::fit_sgd_rmsprop, py::arg("epsilon"))
       .def("estimate", &LogisticReg::Estimate)
-      .def("estimate_all", &LogisticReg::EstimateAll, py::arg("dataset"));
+      .def("estimate_all", &LogisticReg::EstimateAll, py::arg("dataset"))
+      .def("J", &LogisticReg::J);
+
+    py::class_<LogisticRegMultinomial>(m, "LogisticRegMultinomial")
+      .def(py::init<std::shared_ptr<Dataset>, double, std::vector<std::string> >(), py::arg("dataset"), py::arg("lambda"), py::arg("labels"))
+      .def("fit_sgd", &LogisticRegMultinomial::fit_sgd, py::arg("epsilon"), py::arg("alpha"))
+      .def("fit_sgd_rmsprop", &LogisticRegMultinomial::fit_sgd_rmsprop, py::arg("epsilon"))
+      .def("estimate", &LogisticRegMultinomial::Estimate)
+      .def("estimate_all", &LogisticRegMultinomial::EstimateAll, py::arg("dataset"))
+      .def("J", &LogisticRegMultinomial::J);
 
     py::class_<ConfusionMatrix>(m, "ConfusionMatrix")
         .def(py::init<>())

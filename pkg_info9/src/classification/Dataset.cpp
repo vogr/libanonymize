@@ -23,6 +23,7 @@ std::string Dataset::Show(bool verbose) const {
 	ss<<"Dataset with " << n <<" samples, and "<< d <<" dimensions."<<std::endl;
 	if (verbose) {
 		for (int i=0; i< n; i++) {
+			ss << m_labels(i) << ": ";
 			for (int j=0; j < d; j++) {
 				ss << m_instances(i,j)<<" ";
 			}

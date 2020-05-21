@@ -8,7 +8,7 @@ Ce projet implémente différentes méthodes de classification utilisée pour an
 Notre projet présente une architecture hybride :
 
 - un _back-end_, partie du programme qui fait le gros des calculs et de la gestion de la mémoire, implémentée dans une librairie C++ appelée `libinfo9`.
-- un _front-end_ Python qui présente certaines fonctions et certains objets de la librairie `libinfo9` sous la forme de fonctions et objets Python dans une librairie Python appelée `info9`.
+- un _front-end_ Python qui présente certaines fonctions et certains objets de la librairie `libinfo9` sous la forme de fonctions et d'objets Python dans une librairie Python appelée `info9`.
 
 Cette architecture permet d'utiliser les fonctions que nous avons implémentées en C++ dans un _Jupyter Notebook_, par exemple. Le _back-end_ C++ peut également être appelé depuis des programmes C++ traditionnels.
 

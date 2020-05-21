@@ -18,6 +18,7 @@ dependencies:
 - python >= 3.7
 - pip
 - h5py
+- pandas
 - pybind11 >= 2.5
 
 # Notebooks and ipython

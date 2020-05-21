@@ -9,52 +9,37 @@
 #include <highfive/H5Easy.hpp>
 
 #include "ConfusionMatrix.hpp"
-#include "LogisticReg.hpp"
+#include "LogisticRegMultinomial.hpp"
 #include "RandomProjection.hpp"
 
 #include <cstdlib>
 #include <cassert>
 using namespace std;
 
+std::vector<std::string> const LABELS {"O", "B-MISC", "I-MISC", "B-PER", "I-PER", "B-ORG", "I-ORG", "B-LOC", "I-LOC"};
 
 // Random projection params
 int const projection_dim = 256;
 std::string sampling = "None";
 
 
-double lambda = 0.1;
+//double lambda = 0.1;
 int N_TRAIN = 2000;
 int N_TEST = 2000;
 
-// Stop iterating when difference is smaller than threshold
-double EPSILON = 0.1;
-// Learing rate
-double ALPHA = 0.01;
+double EPSILON_RMSPROP = 0.05;
 
-// Label predicted as 1 in proba above decision threshold.
-double DECISION_THRESHOLD = 0.5;
+double EPSILON_SGD = 0.05;
+double ALPHA_SGD = 0.05;
+
+double LAMBDA = 1;
 
 std::string GD_TYPE = "RMSProp";
-
-Eigen::VectorXi relabel(Eigen::Ref<Eigen::VectorXi const> const labels, std::vector<int> const & positive_labels) {
-  // Transform labels to a number in {0,1}, where 1 indicates positive instances. 
-  Eigen::VectorXi new_labels = Eigen::VectorXi::Zero(labels.size());
-  for (auto p : positive_labels) {
-    for(int i = 0; i < labels.size(); i++) {
-      if (labels[i] == p) {
-        new_labels[i] = 1;
-      }
-    }
-  }
-  return new_labels;
-}
-
 
 int main(int argc, char** argv) {
     if(argc < 3) {
         std::cerr << "Usage\n\t";
-        std::cerr << argv[0] << " <train_file.hdf5> <test_file.hdf5> [N training rows, 0 for all] [N testing rows, 0 or all] [lambda default=0.1] [gradient descent | \"Newton\" \"Simple\" \"SGD\" default=\"RMSProp\"] [epsilon] [alpha] [Random projection | \"Gaussian\" \"Rademacher\" default=\"None\"\n";
-        std::cerr << "lambda: the regularizing parameter.\n";
+        std::cerr << argv[0] << " <train_file.hdf5> <test_file.hdf5> [N training rows, 0 for all] [N testing rows, 0 or all] [lambda] [GD type | \"SGD\" default=\"RMSProp\"] [epsion] [alpha] \n";
         return 1;
     }
     if(argc >= 4) {
@@ -64,29 +49,23 @@ int main(int argc, char** argv) {
         N_TEST = std::atoi(argv[4]);
     }
     if(argc >= 6) {
-        lambda = std::atof(argv[5]);
+      LAMBDA = std::atof(argv[5]);
     }
     if(argc >= 7) {
       GD_TYPE = argv[6];
-      if (GD_TYPE != "Newton" && GD_TYPE != "Simple" && GD_TYPE != "SGD" && GD_TYPE != "RMSProp") {
+      if (GD_TYPE != "SGD" && GD_TYPE != "RMSProp") {
         std::cerr << "Gradient descent type not recognised.\n";
         return 1;
       }
     }
     if(argc >= 8) {
-        EPSILON = std::atof(argv[7]);
+      double eps = std::atof(argv[7]);
+      EPSILON_SGD = eps;
+      EPSILON_RMSPROP = eps;
     }
     if(argc >= 9) {
-        ALPHA = std::atof(argv[8]);
+      ALPHA_SGD = std::atof(argv[8]);
     }
-    if(argc >= 10) {
-      sampling = argv[9];
-      if (sampling != "None" && sampling != "Rademacher" && sampling != "Gaussian") {
-        std::cerr << "Sampling type not recognised.\n";
-        return 1;
-      }
-    }
-    
       std::cout << "Loading datasets..." << std::endl;
       H5Easy::File hf_train(argv[1], H5Easy::File::ReadOnly);
 
@@ -102,10 +81,10 @@ int main(int argc, char** argv) {
       Eigen::VectorXi true_labels_train =  [&]() -> Eigen::VectorXi {
         Eigen::VectorXi d = H5Easy::load<Eigen::VectorXi>(hf_train, "true_labels");
         if (N_TRAIN <= 0 || d.rows() <= N_TRAIN) {
-          return relabel(d, {3,4});
+          return d;
         }
         else {
-          return relabel(d.topRows(N_TRAIN), {3,4});
+          return d.topRows(N_TRAIN);
         }
       }();
 
@@ -122,31 +101,25 @@ int main(int argc, char** argv) {
       if (sampling != "None") {
         std::cout << "Random projection done." << std::endl;
       }
-
+      
       std::cout << "Building classifier.\n";
       
-      LogisticReg LG {training_dataset_projected, lambda, DECISION_THRESHOLD};
+      LogisticRegMultinomial LG {training_dataset_projected, LAMBDA, LABELS};
       /* Train model */
-      if (GD_TYPE == "Newton") {
-          std::cout << "Training classifier with Newton method..." << std::endl;
-          LG.fit_newton(EPSILON);
-      }
-      else if (GD_TYPE == "Simple") {
-          std::cout << "Training classifier with a simple fixed-step gradient descent method..." << std::endl;
-          LG.fit_gd(EPSILON, ALPHA);
-      }
-      else if (GD_TYPE == "SGD") {
+
+      if (GD_TYPE == "SGD") {
           std::cout << "Training classifier with fixed step stochastic gradient descent..." << std::endl;
-          LG.fit_sgd(EPSILON, ALPHA);
+          LG.fit_sgd(EPSILON_SGD, ALPHA_SGD);
       }
       else if (GD_TYPE == "RMSProp") {
           std::cout << "Training classifier with fixed step stochastic gradient descent with RMSProp convergence optimizer..." << std::endl;
-          LG.fit_sgd_rmsprop(EPSILON);
+          LG.fit_sgd_rmsprop(EPSILON_RMSPROP);
       }
       else {
           // Unreachable.
           return 1;
       }
+
 
       std::cout << "Done training." << std::endl;
 
@@ -167,10 +140,10 @@ int main(int argc, char** argv) {
       Eigen::VectorXi true_labels_test =  [&]() -> Eigen::VectorXi {
         Eigen::VectorXi d = H5Easy::load<Eigen::VectorXi>(hf_test, "true_labels");
         if (N_TEST <= 0 || d.rows() <= N_TEST) {
-          return relabel(d, {3,4});
+          return d;
         }
         else {
-          return relabel(d.topRows(N_TEST), {3,4});
+          return d.topRows(N_TEST);
         }
       }();
       std::cout << "Loaded " << datapoints_test.rows() << " rows.\n";
@@ -180,9 +153,12 @@ int main(int argc, char** argv) {
       auto testing_dataset_projected = std::make_shared<Dataset>(projecter.Project(datapoints_test), true_labels_test);
 
       std::cout << "Start testing." << std::endl;
-      ConfusionMatrix cm = LG.EstimateAll(*testing_dataset_projected);
-      std::cout << "Classification done. Confusion matrix:\n";
-      std::cout << cm.PrintEvaluation();
+      ConfusionMatrixMulticlass cm = LG.EstimateAll(*testing_dataset_projected);
+
+      std::cerr << std::endl << "Multiclass confusion matrix:" << std::endl;
+      std::cerr << cm.PrintMatrix();
+      std::cerr << "\nOne vs all confusion matrix for I-PER:\n";
+      std::cerr << cm.OneVsAllConfusionMatrix(4).PrintEvaluation();
     }
 
     return 0;

@@ -19,15 +19,15 @@ class LogisticReg : public Classification {
 
         double m_decision_threshold {0.5};
 
-        // Regularized cost function
-        double J();
     public:
         LogisticReg(std::shared_ptr<Dataset> dataset, double lambda, double decision_threshold);
     
-
         //Sigmoid function used in Logistic Regression. Values in [0,1]
         double sigmoid(double t);
         
+        // Regularized cost function
+        double J();
+
         /* Training method. Uses Newton-Raphson's method to fit the parameter vector Beta
            Computes Gradiant and Hessian to do so */
         void fit_newton(double epsilon);
