@@ -1,9 +1,11 @@
 
 # INF442 - Projet 9 : GDPR in practice
 
+~ Amine Chaabouni et Valentin Ogier
+
 ## Introduction
 
-Ce projet implémente différentes méthodes de classification utilisée pour anonymiser des données. Ce fichier `README.md` vous guidera pour l'installation et l'exécution de ce projet sur des exemples.
+Ce projet implémente différentes méthodes de classification utilisée pour anonymiser des données. Ce fichier `README.md` vous guidera pour l'installation et l'exécution de ce projet sur des exemples. Un rapport présentant le projet est disponible dans le dossier `notebooks` au format Jupyter Notebook (.ipynb), en document HTML (.html), et en document PDF (.pdf). L'exécution du Notebook nécessitera la création d'un environnement Conda ; cette procédure est décrite dans ce fichier `README.md`.
 
 Notre projet présente une architecture hybride :
 
