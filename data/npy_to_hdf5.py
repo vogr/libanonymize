@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+"""
+Convert two .npy files representing an annotated set of points, to a single
+.hdf5 file containing two datasets.
+"""
+
 from pathlib import Path
 import sys
 

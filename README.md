@@ -47,6 +47,12 @@ $ conda activate "info_projet9"
 (info_projet9) $ python -m pip install "../pkg_info9"
 ```
 
+### Conversion des données en un format lisible par Python et C++
+
+Les fichiers `.npy` donnés en énoncés peuvent être facilement lus depuis Python, mais pas depuis C++. Une procédure très simple permet de les convertir en fichier `.hdf5`, facilement lisibles depuis Python et C++ : le fichier `data/README.md` détaille cette procédure.
+
+**Note :** Cette procédure utilise les librairies installés dans l'environnement Conda, pensez à l'activer !
+
 ## Utilisation des exemples
 
 ### Exemples Python
