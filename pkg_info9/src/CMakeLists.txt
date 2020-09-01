@@ -39,7 +39,7 @@ target_compile_options(info9-lib
         $<$<CONFIG:RelWithDebInfo>:-O2 -march=native -ggdb3 -flto -fno-fat-lto-objects> # relwithdebinfo: 02 is implied
         -pipe
         -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS
-        -fexceptions -fasynchronous-unwind-tables -fstack-protector-strong -fstack-clash-protection -fcf-protection
+        -fexceptions -fasynchronous-unwind-tables -fstack-protector-strong
         -Wl,-z,noexecstack,-z,relro
     PRIVATE
         -Wall -Wextra -Wpedantic -Wformat=2 -Wswitch-default -Wswitch-enum -Wfloat-equal -Wno-conversion

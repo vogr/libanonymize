@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.16)
 project(info9 VERSION 1.0)
 
 set(CMAKE_PREFIX_PATH, ${CONDA_PREFIX})

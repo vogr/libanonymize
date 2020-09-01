@@ -48,7 +48,7 @@ double LogisticRegMultinomial::J() {
     Eigen::VectorXd yh = y_hat(m_dataset->getInstance(i));
 
 
-    // y * log(yh), but y is one-hot in k
+    // y.T * log(yh) = log(yh[k]), because y is one-hot in k
     // prevent log(0) ...
     s += - 1. / m_dim * std::log(yh(k) + 1e-6 );
   }
