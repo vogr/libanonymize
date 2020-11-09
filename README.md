@@ -1,5 +1,5 @@
 
-# INF442 - Projet 9 : GDPR in practice
+# libanonymize, et applications
 
 ~ Amine Chaabouni et Valentin Ogier
 
