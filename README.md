@@ -1,7 +1,7 @@
 
 # libanonymize, et applications
 
-~ Amine Chaabouni et Valentin Ogier
+~ [Amine Chaabouni](https://github.com/amine-chaabouni) et [Valentin Ogier](https://github.com/vogr)
 
 ## Introduction
 
